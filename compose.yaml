@@ -1,0 +1,44 @@
+#version: '3.9'
+name: "fastapi"    # image name
+
+services:   # superset (servides)
+
+  api:      # define servide (hear api)
+    build:  # build image
+      context: ./docker_con1  # Corrected context path
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgres_db  
+    container_name: myfastapicontainer  # container_name
+    ports:
+      - "8000:8000"    # Expose container port 8000 to host port 8000 
+    networks:
+      - my_api_net
+
+  postgres_db:
+    image: postgres:latest  # Use the official PostgreSQL image
+    restart: always         # always run. (Run always —> restart : always)
+    container_name: PostgresCont
+    environment:
+        - POSTGRES_USER=neondb_owner
+        - POSTGRES_PASSWORD=WC94rhZSjwUe
+        - POSTGRES_DB=docker1_db
+    ports:
+        - '5433:5432'
+    volumes:
+        - postgres_db:/var/lib/postgresql/data
+    networks:
+      - my_api_net
+
+volumes:
+  postgres_db:
+    driver: local
+
+networks:
+  my_api_net: # define custom network
+
+
+
+
+      
+      
